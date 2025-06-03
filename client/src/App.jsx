@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { io } from 'socket.io-client'
 import { Container } from '@mui/material'
-const socket = io("https://real-time-chat-backend-hvvt.onrender.com");
+const socket = io("http://localhost:3000");
 
 const App = () => {
   const [socketId, setSocketId] = useState("");
