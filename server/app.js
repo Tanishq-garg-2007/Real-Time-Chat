@@ -7,7 +7,7 @@ const app = express();
 const server = createServer(app);
 const io = new Server(server,{
     cors:{
-        origin:"https://real-time-chat-frontend-ib7j.onrender.com",
+        origin:"http://localhost:5173",
         methods:["GET","POST"],
         credentials:"true"
     },
