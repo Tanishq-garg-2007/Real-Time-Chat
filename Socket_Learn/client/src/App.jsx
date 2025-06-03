@@ -20,7 +20,7 @@ const App = () => {
   const join_room = () => {
     const roomname = document.getElementById("join_room").value;
     setCurrentRoom(roomname);
-    socket.emit('join-room', roomname);
+    socket.emit('join-room', { room: roomname, user_name: userName });
     setmessages([]);
     document.getElementById("join_room").value = "";
   }
@@ -34,6 +34,10 @@ const App = () => {
       setmessages((messages) => [...messages, data]);
     });
 
+    socket.on("user-joined", (data) => {
+      setmessages((messages) => [...messages, data]);
+    });
+    
     return () => {
       socket.disconnect();
     }
