@@ -28,9 +28,14 @@ io.on("connection",(socket)=>{
         io.to(room).emit("receive-message",{message,user_name});
     });
 
-    socket.on("join-room",(room)=>{
+    socket.on("join-room", ({ room, user_name }) => {
         socket.join(room);
-        console.log(`User Joined room ${room}`);
+        console.log(`${user_name} joined room ${room}`);
+    
+        socket.to(room).emit("user-joined", {
+            message: `${user_name} has joined the room.`,
+            user_name: "System"
+        });
     });
 
     socket.on("disconnect",()=>{
