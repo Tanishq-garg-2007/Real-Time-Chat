@@ -47,6 +47,3 @@ io.on("connection",(socket)=>{
 server.listen(3000,()=>{
     console.log("Server Is running on port 3000") 
 })
-
-// Hi How Are You I Have Applied A Change 
-jkjrjr
