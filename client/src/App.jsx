@@ -91,8 +91,11 @@ const startRecording = async () => {
 
 
   const stopRecording = () => {
-
-  }
+    if (mediaRecorderRef.current) {
+      mediaRecorderRef.current.stop();
+      setRecording(false);
+    }
+  };
   
   useEffect(() => {
     socket.on("connect", () => setSocketId(socket.id));
