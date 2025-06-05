@@ -107,18 +107,15 @@ const startRecording = async () => {
   }, []);
 
   return (
-    <div style={{ backgroundColor: '#121212', minHeight: "100vh", paddingTop: "50px", color: "#f5f5f5" }}>
-      <Container style={{ maxWidth: "600px", backgroundColor: "#1e1e1e", borderRadius: "12px", padding: "2rem", boxShadow: "0 0 10px rgba(0,0,0,0.7)" }}>
-        <h3 className="text-center mb-4" style={{ color: "#00adb5" }}>Real-time Chat</h3>
+  <div style={{ backgroundColor: '#121212', minHeight: "100vh", paddingTop: "50px", color: "#f5f5f5" }}>
+    <Container style={{ maxWidth: "800px", backgroundColor: "#1e1e1e", borderRadius: "12px", padding: "2rem", boxShadow: "0 0 10px rgba(0,0,0,0.7)" }}>
+      <h3 className="text-center mb-4" style={{ color: "#00adb5" }}>Real-time Chat</h3>
 
+      {/* Section 1: Username and Join Room */}
+      <div style={{ marginBottom: "2rem", borderBottom: "1px solid #444", paddingBottom: "1.5rem" }}>
         <div className="mb-3">
           <label className="form-label">User Name</label>
           <input type="text" className="form-control" id="User_name" placeholder="Type a Name..." value={userName} onChange={(e) => setUserName(e.target.value)} style={{ backgroundColor: "#333", color: "#fff", border: "1px solid #444" }} />
-        </div>
-
-        <div className="mb-3">
-          <label className="form-label">Your Current Room Is</label>
-          <div style={{ backgroundColor: "#2c2c2c", padding: "10px", borderRadius: "6px", wordBreak: "break-all" }}>{currentRoom || "Not in a room"}</div>
         </div>
 
         <div className="mb-3">
@@ -130,19 +127,49 @@ const startRecording = async () => {
         </div>
 
         <div className="mb-3">
-        <label className="form-label">Message</label>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+          <label className="form-label">Your Current Room Is</label>
+          <div style={{ backgroundColor: "#2c2c2c", padding: "10px", borderRadius: "6px", wordBreak: "break-all" }}>{currentRoom || "Not in a room"}</div>
+        </div>
+      </div>
+
+      {/* Section 2: Messages and Message Input */}
+      <div>
+        <h5 className="mb-3" style={{ color: "#00adb5" }}>Messages</h5>
+        <div style={{ maxHeight: "250px", overflowY: "auto", backgroundColor: "#2a2a2a", borderRadius: "8px", padding: "10px", marginBottom: "1.5rem" }}>
+          {
+            messages.map((m, i) => {
+              const isImage = /\.(jpeg|jpg|gif|png|webp|svg)$/i.test(m.message);
+              const isAudio = /\.(webm|mp3|wav|ogg)$/i.test(m.message);
+              return (
+                <div key={i} className="mb-2 p-2 rounded" style={{ backgroundColor: "#393e46", color: "#f8f8f8" }}>
+                  <strong style={{ color: "#00adb5" }}>{m.user_name === userName ? "You" : m.user_name}:</strong>{" "}
+                  {isImage ? (
+                    <img src={m.message} alt="sent content" style={{ maxWidth: "200px", borderRadius: "8px", display: "block", marginTop: "5px" }} />
+                  ) : isAudio ? (
+                    <audio controls src={m.message} style={{ display: "block", marginTop: "5px" }} />
+                  ) : (
+                    m.message
+                  )}
+                </div>
+              );
+            })
+          }
+        </div>
+
+        <div className="mb-3">
+          <label className="form-label">Message</label>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
             <input type="text" className="form-control" id="message" placeholder="Type a message..." style={{ flex: 1, backgroundColor: "#333", color: "#fff", border: "1px solid #444" }} />
-    
+
             <label htmlFor="image-upload" style={{ backgroundColor: "#00adb5", color: "#fff", padding: "8px 12px", borderRadius: "6px", cursor: "pointer", fontSize: "14px", whiteSpace: "nowrap" }}>📎 Upload</label>
             <input type="file" id="image-upload" accept="image/*" onChange={image_upload} style={{ display: 'none' }} />
 
             {!recording ? (
-            <button onClick={startRecording} style={{ backgroundColor: "#00adb5", color: "#fff", padding: "8px 12px", borderRadius: "6px", border: "none", cursor: "pointer" }}>🎙️</button>
+              <button onClick={startRecording} style={{ backgroundColor: "#00adb5", color: "#fff", padding: "8px 12px", borderRadius: "6px", border: "none", cursor: "pointer" }}>🎙️</button>
             ) : (
-            <button onClick={stopRecording} style={{ backgroundColor: "#ff4d4d", color: "#fff", padding: "8px 12px", borderRadius: "6px", border: "none", cursor: "pointer" }}>🛑</button>
+              <button onClick={stopRecording} style={{ backgroundColor: "#ff4d4d", color: "#fff", padding: "8px 12px", borderRadius: "6px", border: "none", cursor: "pointer" }}>🛑</button>
             )}
-        </div>
+          </div>
         </div>
 
         <div className="mb-3">
@@ -150,37 +177,14 @@ const startRecording = async () => {
           <input type="text" className="form-control" id="room" placeholder="Enter room name" style={{ backgroundColor: "#333", color: "#fff", border: "1px solid #444" }} />
         </div>
 
-        <div className="d-grid mb-4">
+        <div className="d-grid">
           <button className="btn btn-info" onClick={submit}>Send</button>
         </div>
+      </div>
+    </Container>
+  </div>
+);
 
-        <h5 className="mb-3" style={{ color: "#00adb5" }}>Messages</h5>
-        
-        <div style={{ maxHeight: "250px", overflowY: "auto", backgroundColor: "#2a2a2a", borderRadius: "8px", padding: "10px" }}>
-          {
-            messages.map((m, i) => {
-                const isImage = /\.(jpeg|jpg|gif|png|webp|svg)$/i.test(m.message);
-                const isAudio = /\.(webm|mp3|wav|ogg)$/i.test(m.message);
-
-                return (
-                <div key={i} className="mb-2 p-2 rounded" style={{ backgroundColor: "#393e46", color: "#f8f8f8" }}>
-                    <strong style={{ color: "#00adb5" }}>{m.user_name === userName ? "You" : m.user_name}:</strong>{" "}
-                    {isImage ? (
-                    <img src={m.message} alt="sent content" style={{ maxWidth: "200px", borderRadius: "8px", display: "block", marginTop: "5px" }} />
-                    ) : isAudio ? (
-                    <audio controls src={m.message} style={{ display: "block", marginTop: "5px" }} />
-                    ) : (
-                    m.message
-                    )}
-                </div>
-                );
-            })
-          }
-        </div>
-        
-      </Container>
-    </div>
-  )
 }
 
 export default App
