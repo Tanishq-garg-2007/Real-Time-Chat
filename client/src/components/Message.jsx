@@ -1,7 +1,7 @@
 import React from 'react'
 
 const Message = () => {
-    
+
     const image_upload = async (e) => {
     const file = e.target.files[0];
     if (!file) return alert("Please choose an image first");
@@ -20,6 +20,62 @@ const Message = () => {
     }
   };
 
+  const startRecording = async () => {
+    try {
+      const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+      mediaRecorderRef.current = new MediaRecorder(stream);
+      audioChunksRef.current = [];
+
+      mediaRecorderRef.current.ondataavailable = (e) => {
+        if (e.data.size > 0) {
+          audioChunksRef.current.push(e.data);
+        }
+      };
+
+      mediaRecorderRef.current.onstop = async () => {
+        const audioBlob = new Blob(audioChunksRef.current, { type: 'audio/webm' });
+        
+        const formData = new FormData();
+        formData.append('file', audioBlob);
+        formData.append('upload_preset', CLOUDINARY_UPLOAD_PRESET);
+
+        try {
+          const response = await fetch(
+            `https://api.cloudinary.com/v1_1/${CLOUDINARY_CLOUD_NAME}/video/upload`,
+            {
+              method: 'POST',
+              body: formData,
+            }
+          );
+          const data = await response.json();
+          document.getElementById("message").value = data.secure_url;
+        } catch (error) {
+          console.error('Error uploading to Cloudinary:', error);
+        }
+      };
+
+      mediaRecorderRef.current.start();
+      setRecording(true);
+    } catch (err) {
+      console.error('Microphone access error:', err);
+    }
+  };
+
+
+  const stopRecording = () => {
+    if (mediaRecorderRef.current) {
+      mediaRecorderRef.current.stop();
+      setRecording(false);
+    }
+  };
+
+    useEffect(() => {
+      socket.on("connect", () => setSocketId(socket.id));
+      socket.on("receive-message", (data) => setmessages((messages) => [...messages, data]));
+      socket.on("user-joined", (data) => setmessages((messages) => [...messages, data]));
+      return () => socket.disconnect();
+    }, []);
+    
   return (
     <>
         <div className="mb-3">
