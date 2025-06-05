@@ -68,7 +68,7 @@ const App = () => {
     formData.append("upload_preset", "image Uploader");
     formData.append("cloud_name", "dxhopl1cj");
     try {
-      const res = await fetch("https://api.cloudinary.com/v1_1/dxhopl1cj/image/upload", { method: "POST", body: formData });
+      const res = await fetch("https://api.cloudinary.com/v1_1/dxhopl1cj/raw/upload", { method: "POST", body: formData });
       if (!res.ok) throw new Error("Upload failed");
       const data = await res.json();
       document.getElementById("message").value = data.secure_url;
