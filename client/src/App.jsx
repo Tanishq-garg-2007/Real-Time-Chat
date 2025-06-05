@@ -212,7 +212,7 @@ return (
               <input type="text" className="form-control" id="message" placeholder="Type a message..." style={{ flex: 1, minWidth: '200px', backgroundColor: "#333", color: "#fff", border: "1px solid #444" }} />
 
                 <div className="dropdown">
-                    <button className="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <button className="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         📎 Upload
                     </button>
 
