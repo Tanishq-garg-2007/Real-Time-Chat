@@ -14,7 +14,7 @@ const App = () => {
 
   const CLOUDINARY_UPLOAD_PRESET = 'image Uploader';
   const CLOUDINARY_CLOUD_NAME = 'dxhopl1cj'; 
-  
+
   const submit = () => {
     const message = document.getElementById("message").value;
     const room = document.getElementById("room").value;
@@ -76,8 +76,7 @@ const startRecording = async () => {
             }
           );
           const data = await response.json();
-          setCloudinaryURL(data.secure_url);
-          console.log('Uploaded to Cloudinary:', data.secure_url);
+          document.getElementById("message").value = data.secure_url;
         } catch (error) {
           console.error('Error uploading to Cloudinary:', error);
         }
