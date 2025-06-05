@@ -141,68 +141,87 @@ const startRecording = async () => {
     socket.on("user-joined", (data) => setmessages((messages) => [...messages, data]));
     return () => socket.disconnect();
   }, []);
-
 return (
   <div style={{ backgroundColor: '#121212', minHeight: "100vh", paddingTop: "50px", color: "#f5f5f5" }}>
-    <Container style={{ maxWidth: "1000px", backgroundColor: "#1e1e1e", borderRadius: "12px", padding: "2rem", boxShadow: "0 0 10px rgba(0,0,0,0.7)" }}>
+    <Container style={{
+      maxWidth: "1000px",
+      backgroundColor: "#1e1e1e",
+      borderRadius: "12px",
+      padding: "2rem",
+      boxShadow: "0 0 10px rgba(0,0,0,0.7)"
+    }}>
       <h3 className="text-center mb-4" style={{ color: "#00adb5" }}>Real-time Chat</h3>
 
-      {/* Responsive Flex Container */}
       <div style={{
         display: "flex",
-        gap: "2rem",
         flexWrap: "wrap",
-        flexDirection: window.innerWidth < 768 ? "column" : "row"
+        gap: "2rem"
       }}>
-        {/* Left Section */}
+        {/* Left Panel */}
         <div style={{ flex: "1", minWidth: "280px" }}>
           <div className="mb-3">
             <label className="form-label">User Name</label>
-            <input type="text" className="form-control" id="User_name" placeholder="Type a Name..." value={userName} onChange={(e) => setUserName(e.target.value)} style={{ backgroundColor: "#333", color: "#fff", border: "1px solid #444" }} />
+            <input type="text" className="form-control" value={userName}
+              onChange={(e) => setUserName(e.target.value)}
+              placeholder="Type a Name..."
+              style={{ backgroundColor: "#333", color: "#fff", border: "1px solid #444" }} />
           </div>
 
           <div className="mb-3">
             <label className="form-label">Join Room</label>
             <div className="input-group">
-              <input type="text" className="form-control" id="join_room" placeholder="Enter room name" style={{ backgroundColor: "#333", color: "#fff", border: "1px solid #444" }} />
-              <button className="btn btn-outline-info" onClick={join_room}>Join</button>
+              <input type="text" className="form-control" id="join_room"
+                placeholder="Enter room name"
+                style={{ backgroundColor: "#333", color: "#fff", border: "1px solid #444" }} />
+              <button className="btn" style={{ backgroundColor: "#00adb5", color: "#fff" }} onClick={join_room}>Join</button>
             </div>
           </div>
 
           <div className="mb-3">
             <label className="form-label">Your Current Room Is</label>
-            <div style={{ backgroundColor: "#2c2c2c", padding: "10px", borderRadius: "6px", wordBreak: "break-all" }}>{currentRoom || "Not in a room"}</div>
+            <div style={{
+              backgroundColor: "#2c2c2c",
+              padding: "10px",
+              borderRadius: "6px",
+              wordBreak: "break-word"
+            }}>{currentRoom || "Not in a room"}</div>
           </div>
         </div>
 
-        {/* Right Section */}
+        {/* Right Panel */}
         <div style={{ flex: "2", minWidth: "280px" }}>
           <h5 className="mb-3" style={{ color: "#00adb5" }}>Messages</h5>
-          <div style={{ maxHeight: "250px", overflowY: "auto", backgroundColor: "#2a2a2a", borderRadius: "8px", padding: "10px", marginBottom: "1.5rem" }}>
+          <div style={{
+            maxHeight: "250px",
+            overflowY: "auto",
+            backgroundColor: "#2a2a2a",
+            borderRadius: "8px",
+            padding: "10px",
+            marginBottom: "1.5rem"
+          }}>
             {
               messages.map((m, i) => {
                 const isImage = /\.(jpeg|jpg|gif|png|webp|svg)$/i.test(m.message);
                 const isAudio = /\.(webm|mp3|wav|ogg)$/i.test(m.message);
                 const isDocument = /\.(doc|pdf|docx|txt|ppt|xls)$/i.test(m.message);
-                const isvideo = /\.(mp4|mov|avi|webm|flv)$/i.test(m.message);
+                const isVideo = /\.(mp4|mov|avi|webm|flv)$/i.test(m.message);
 
                 return (
                   <div key={i} className="mb-2 p-2 rounded" style={{ backgroundColor: "#393e46", color: "#f8f8f8" }}>
                     <strong style={{ color: "#00adb5" }}>{m.user_name === userName ? "You" : m.user_name}:</strong>{" "}
                     {isImage ? (
-                      <img src={m.message} alt="sent content" style={{ maxWidth: "200px", borderRadius: "8px", display: "block", marginTop: "5px" }} />
+                      <img src={m.message} alt="sent content" style={{ maxWidth: "200px", borderRadius: "8px", marginTop: "5px" }} />
                     ) : isAudio ? (
                       <audio controls src={m.message} style={{ display: "block", marginTop: "5px" }} />
-                    ) : isDocument? (
-                      <embed src={m.message} type="application/pdf" width="100%" height="600px" />
-
-                    ): isvideo? (
-<video width="100%" height="auto" controls>
-  <source src={m.message} type="video/mp4" />
-  Your browser does not support the video tag.
-</video>
-                    ):(
-                        m.message
+                    ) : isDocument ? (
+                      <embed src={m.message} type="application/pdf" width="100%" height="400px" style={{ marginTop: "5px" }} />
+                    ) : isVideo ? (
+                      <video width="100%" height="auto" controls style={{ marginTop: "5px", borderRadius: "8px" }}>
+                        <source src={m.message} />
+                        Your browser does not support the video tag.
+                      </video>
+                    ) : (
+                      <span>{m.message}</span>
                     )}
                   </div>
                 );
@@ -210,41 +229,50 @@ return (
             }
           </div>
 
+          {/* Message input & upload */}
           <div className="mb-3">
             <label className="form-label">Message</label>
             <div style={{ display: 'flex', flexWrap: 'wrap', gap: '10px' }}>
-              <input type="text" className="form-control" id="message" placeholder="Type a message..." style={{ flex: 1, minWidth: '200px', backgroundColor: "#333", color: "#fff", border: "1px solid #444" }} />
+              <input type="text" className="form-control" id="message"
+                placeholder="Type a message..."
+                style={{ flex: 1, minWidth: '200px', backgroundColor: "#333", color: "#fff", border: "1px solid #444" }} />
 
-                <div className="dropdown">
-                    <button className="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        📎 Upload
-                    </button>
+              <div className="dropdown">
+                <button className="btn dropdown-toggle" type="button" id="dropdownMenuButton"
+                  data-bs-toggle="dropdown" aria-expanded="false"
+                  style={{ backgroundColor: "#00adb5", color: "#fff", border: "none" }}>
+                  📎 Upload
+                </button>
+                <div className="dropdown-menu" aria-labelledby="dropdownMenuButton" style={{ backgroundColor: "#2a2a2a" }}>
+                  <label htmlFor="image-upload" style={uploadStyle}>Images</label>
+                  <input type="file" id="image-upload" onChange={image_upload} style={{ display: 'none' }} />
 
-                    <div className="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                        <label htmlFor="image-upload" style={{ backgroundColor: "#00adb5", color: "#fff", padding: "8px 12px", borderRadius: "6px", cursor: "pointer", fontSize: "14px", whiteSpace: "nowrap" }}> Images </label>
-                        <input type="file" id="image-upload" onChange={image_upload} style={{ display: 'none' }} />
-                        <label htmlFor="video-upload" style={{ backgroundColor: "#00adb5", color: "#fff", padding: "8px 12px", borderRadius: "6px", cursor: "pointer", fontSize: "14px", whiteSpace: "nowrap" }}> Video </label>
-                        <input type="file" id="video-upload" onChange={video_upload} style={{ display: 'none' }} />
-                        <label htmlFor="document-upload" style={{ backgroundColor: "#00adb5", color: "#fff", padding: "8px 12px", borderRadius: "6px", cursor: "pointer", fontSize: "14px", whiteSpace: "nowrap" }}> Document</label>
-                        <input type="file" id="document-upload" onChange={document_upload} style={{ display: 'none' }} />
-                        {!recording ? (
-                            <button onClick={startRecording} style={{ backgroundColor: "#00adb5", color: "#fff", padding: "8px 12px", borderRadius: "6px", border: "none", cursor: "pointer" }}>🎙️</button>
-                        ) : (
-                            <button onClick={stopRecording} style={{ backgroundColor: "#ff4d4d", color: "#fff", padding: "8px 12px", borderRadius: "6px", border: "none", cursor: "pointer" }}>🛑</button>
-                        )}
-                    </div>
+                  <label htmlFor="video-upload" style={uploadStyle}>Video</label>
+                  <input type="file" id="video-upload" onChange={video_upload} style={{ display: 'none' }} />
+
+                  <label htmlFor="document-upload" style={uploadStyle}>Document</label>
+                  <input type="file" id="document-upload" onChange={document_upload} style={{ display: 'none' }} />
+
+                  {!recording ? (
+                    <button onClick={startRecording} style={recordButtonStyle}>🎙️</button>
+                  ) : (
+                    <button onClick={stopRecording} style={{ ...recordButtonStyle, backgroundColor: "#ff4d4d" }}>🛑</button>
+                  )}
                 </div>
-
+              </div>
             </div>
           </div>
 
+          {/* Room Name */}
           <div className="mb-3">
             <label className="form-label">Room</label>
-            <input type="text" className="form-control" id="room" placeholder="Enter room name" style={{ backgroundColor: "#333", color: "#fff", border: "1px solid #444" }} />
+            <input type="text" className="form-control" id="room" placeholder="Enter room name"
+              style={{ backgroundColor: "#333", color: "#fff", border: "1px solid #444" }} />
           </div>
 
+          {/* Send Button */}
           <div className="d-grid">
-            <button className="btn btn-info" onClick={submit}>Send</button>
+            <button className="btn" style={{ backgroundColor: "#00adb5", color: "#fff" }} onClick={submit}>Send</button>
           </div>
         </div>
       </div>
