@@ -79,6 +79,8 @@ const App = () => {
             <input type="text" className="form-control" id="message" placeholder="Type a message..." style={{ flex: 1, backgroundColor: "#333", color: "#fff", border: "1px solid #444" }} />
             <label htmlFor="image-upload" style={{ backgroundColor: "#00adb5", color: "#fff", padding: "8px 12px", borderRadius: "6px", cursor: "pointer", fontSize: "14px", whiteSpace: "nowrap" }}>📎 Upload</label>
             <input type="file" id="image-upload" accept="image/*" onChange={image_upload} style={{ display: 'none' }} />
+            <label htmlFor="image-upload" style={{ backgroundColor: "#00adb5", color: "#fff", padding: "8px 12px", borderRadius: "6px", cursor: "pointer", fontSize: "14px", whiteSpace: "nowrap" }}>📎 Upload</label>
+            <input type="file" id="image-upload" accept="image/*" onChange={image_upload} style={{ display: 'none' }} />
           </div>
         </div>
 
