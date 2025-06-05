@@ -42,6 +42,42 @@ const App = () => {
     }
   };
 
+  const video_upload = async (e) => {
+    const file = e.target.files[0];
+    if (!file) return alert("Please choose an image first");
+    const formData = new FormData();
+    formData.append("file", file);
+    formData.append("upload_preset", "image Uploader");
+    formData.append("cloud_name", "dxhopl1cj");
+    try {
+      const res = await fetch("https://api.cloudinary.com/v1_1/dxhopl1cj/image/upload", { method: "POST", body: formData });
+      if (!res.ok) throw new Error("Upload failed");
+      const data = await res.json();
+      document.getElementById("message").value = data.secure_url;
+    } catch (err) {
+      console.error("Upload failed:", err);
+      alert("Failed to upload image");
+    }
+  };
+
+  const document_upload = async (e) => {
+    const file = e.target.files[0];
+    if (!file) return alert("Please choose an image first");
+    const formData = new FormData();
+    formData.append("file", file);
+    formData.append("upload_preset", "image Uploader");
+    formData.append("cloud_name", "dxhopl1cj");
+    try {
+      const res = await fetch("https://api.cloudinary.com/v1_1/dxhopl1cj/image/upload", { method: "POST", body: formData });
+      if (!res.ok) throw new Error("Upload failed");
+      const data = await res.json();
+      document.getElementById("message").value = data.secure_url;
+    } catch (err) {
+      console.error("Upload failed:", err);
+      alert("Failed to upload image");
+    }
+  };
+
   const join_room = () => {
     const roomname = document.getElementById("join_room").value;
     setCurrentRoom(roomname);
