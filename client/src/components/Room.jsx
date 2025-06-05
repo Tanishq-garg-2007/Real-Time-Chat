@@ -1,4 +1,8 @@
 import React from 'react'
+import { io } from 'socket.io-client'
+import { useEffect, useState, useRef } from 'react';
+
+const socket = io("http://localhost:3000");
 
 
 const Room = () => {
@@ -13,6 +17,13 @@ const Room = () => {
     document.getElementById("join_room").value = "";
     }
   
+    useEffect(() => {
+      socket.on("connect", () => setSocketId(socket.id));
+      socket.on("receive-message", (data) => setmessages((messages) => [...messages, data]));
+      socket.on("user-joined", (data) => setmessages((messages) => [...messages, data]));
+      return () => socket.disconnect();
+    }, []);
+
   return (
     <>
         <div className="mb-3">

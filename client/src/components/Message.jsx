@@ -1,4 +1,9 @@
 import React from 'react'
+import { io } from 'socket.io-client'
+import { useEffect, useState, useRef } from 'react';
+
+
+const socket = io("http://localhost:3000");
 
 const Message = () => {
 
@@ -75,7 +80,8 @@ const Message = () => {
       socket.on("user-joined", (data) => setmessages((messages) => [...messages, data]));
       return () => socket.disconnect();
     }, []);
-    
+
+
   return (
     <>
         <div className="mb-3">
