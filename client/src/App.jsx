@@ -167,13 +167,27 @@ return (
             <label className="form-label">Message</label>
             <div style={{ display: 'flex', flexWrap: 'wrap', gap: '10px' }}>
               <input type="text" className="form-control" id="message" placeholder="Type a message..." style={{ flex: 1, minWidth: '200px', backgroundColor: "#333", color: "#fff", border: "1px solid #444" }} />
-              <label htmlFor="image-upload" style={{ backgroundColor: "#00adb5", color: "#fff", padding: "8px 12px", borderRadius: "6px", cursor: "pointer", fontSize: "14px", whiteSpace: "nowrap" }}>📎 Upload</label>
-              <input type="file" id="image-upload" onChange={image_upload} style={{ display: 'none' }} />
-              {!recording ? (
-                <button onClick={startRecording} style={{ backgroundColor: "#00adb5", color: "#fff", padding: "8px 12px", borderRadius: "6px", border: "none", cursor: "pointer" }}>🎙️</button>
-              ) : (
-                <button onClick={stopRecording} style={{ backgroundColor: "#ff4d4d", color: "#fff", padding: "8px 12px", borderRadius: "6px", border: "none", cursor: "pointer" }}>🛑</button>
-              )}
+
+                <div class="dropdown">
+                    <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        📎 Upload
+                    </button>
+
+                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                        <label htmlFor="image-upload" style={{ backgroundColor: "#00adb5", color: "#fff", padding: "8px 12px", borderRadius: "6px", cursor: "pointer", fontSize: "14px", whiteSpace: "nowrap" }}> Images </label>
+                        <input type="file" id="image-upload" onChange={image_upload} style={{ display: 'none' }} />
+                        <label htmlFor="image-upload" style={{ backgroundColor: "#00adb5", color: "#fff", padding: "8px 12px", borderRadius: "6px", cursor: "pointer", fontSize: "14px", whiteSpace: "nowrap" }}> Video </label>
+                        <input type="file" id="image-upload" onChange={image_upload} style={{ display: 'none' }} />
+                        <label htmlFor="image-upload" style={{ backgroundColor: "#00adb5", color: "#fff", padding: "8px 12px", borderRadius: "6px", cursor: "pointer", fontSize: "14px", whiteSpace: "nowrap" }}> Document</label>
+                        <input type="file" id="image-upload" onChange={image_upload} style={{ display: 'none' }} />
+                        {!recording ? (
+                            <button onClick={startRecording} style={{ backgroundColor: "#00adb5", color: "#fff", padding: "8px 12px", borderRadius: "6px", border: "none", cursor: "pointer" }}>🎙️</button>
+                        ) : (
+                            <button onClick={stopRecording} style={{ backgroundColor: "#ff4d4d", color: "#fff", padding: "8px 12px", borderRadius: "6px", border: "none", cursor: "pointer" }}>🛑</button>
+                        )}
+                    </div>
+                </div>
+
             </div>
           </div>
 
