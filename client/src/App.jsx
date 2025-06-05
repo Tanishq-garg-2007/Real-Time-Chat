@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useRef } from 'react';
 import { io } from 'socket.io-client'
 import { Container } from '@mui/material'
 
@@ -13,7 +13,7 @@ const App = () => {
   const [recording, setRecording] = useState(false);
   const mediaRecorderRef = useRef(null);
   const audioChunksRef = useRef([]);
-  
+
   const CLOUDINARY_UPLOAD_PRESET = 'image Uploader';
   const CLOUDINARY_CLOUD_NAME = 'dxhopl1cj'; 
 
