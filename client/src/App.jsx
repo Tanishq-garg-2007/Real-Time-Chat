@@ -11,7 +11,9 @@ const App = () => {
   const [currentRoom, setCurrentRoom] = useState(""); 
   const [userName, setUserName] = useState("");
   const [recording, setRecording] = useState(false);
-
+  const mediaRecorderRef = useRef(null);
+  const audioChunksRef = useRef([]);
+  
   const CLOUDINARY_UPLOAD_PRESET = 'image Uploader';
   const CLOUDINARY_CLOUD_NAME = 'dxhopl1cj'; 
 
