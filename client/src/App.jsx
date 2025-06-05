@@ -194,9 +194,13 @@ return (
                     ) : isAudio ? (
                       <audio controls src={m.message} style={{ display: "block", marginTop: "5px" }} />
                     ) : isDocument? (
-                      <iframe src={m.message} width="600" height="400"></iframe>
+                      <embed src={m.message} type="application/pdf" width="100%" height="600px" />
+
                     ): isvideo? (
-                      <iframe src={m.message} width="600" height="400"></iframe>
+<video width="100%" height="auto" controls>
+  <source src={m.message} type="video/mp4" />
+  Your browser does not support the video tag.
+</video>
                     ):(
                         m.message
                     )}
