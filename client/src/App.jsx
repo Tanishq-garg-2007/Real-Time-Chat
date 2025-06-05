@@ -155,28 +155,29 @@ const startRecording = async () => {
         </div>
 
         <h5 className="mb-3" style={{ color: "#00adb5" }}>Messages</h5>
+        
         <div style={{ maxHeight: "250px", overflowY: "auto", backgroundColor: "#2a2a2a", borderRadius: "8px", padding: "10px" }}>
           {
-  messages.map((m, i) => {
-    const isImage = /\.(jpeg|jpg|gif|png|webp|svg)$/i.test(m.message);
-    const isAudio = /\.(webm|mp3|wav|ogg)$/i.test(m.message);
+            messages.map((m, i) => {
+                const isImage = /\.(jpeg|jpg|gif|png|webp|svg)$/i.test(m.message);
+                const isAudio = /\.(webm|mp3|wav|ogg)$/i.test(m.message);
 
-    return (
-      <div key={i} className="mb-2 p-2 rounded" style={{ backgroundColor: "#393e46", color: "#f8f8f8" }}>
-        <strong style={{ color: "#00adb5" }}>{m.user_name === userName ? "You" : m.user_name}:</strong>{" "}
-        {isImage ? (
-          <img src={m.message} alt="sent content" style={{ maxWidth: "200px", borderRadius: "8px", display: "block", marginTop: "5px" }} />
-        ) : isAudio ? (
-          <audio controls src={m.message} style={{ display: "block", marginTop: "5px" }} />
-        ) : (
-          m.message
-        )}
-      </div>
-    );
-  })
-}
-
+                return (
+                <div key={i} className="mb-2 p-2 rounded" style={{ backgroundColor: "#393e46", color: "#f8f8f8" }}>
+                    <strong style={{ color: "#00adb5" }}>{m.user_name === userName ? "You" : m.user_name}:</strong>{" "}
+                    {isImage ? (
+                    <img src={m.message} alt="sent content" style={{ maxWidth: "200px", borderRadius: "8px", display: "block", marginTop: "5px" }} />
+                    ) : isAudio ? (
+                    <audio controls src={m.message} style={{ display: "block", marginTop: "5px" }} />
+                    ) : (
+                    m.message
+                    )}
+                </div>
+                );
+            })
+          }
         </div>
+        
       </Container>
     </div>
   )
