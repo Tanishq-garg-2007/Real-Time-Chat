@@ -191,8 +191,10 @@ return (
                       <img src={m.message} alt="sent content" style={{ maxWidth: "200px", borderRadius: "8px", display: "block", marginTop: "5px" }} />
                     ) : isAudio ? (
                       <audio controls src={m.message} style={{ display: "block", marginTop: "5px" }} />
-                    ) : (
-                      m.message
+                    ) : isDocument? (
+                      <iframe src={m.message} width="600" height="400"></iframe>
+                    ):(
+                        m.message
                     )}
                   </div>
                 );
