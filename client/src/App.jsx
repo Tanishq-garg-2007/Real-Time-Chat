@@ -183,6 +183,7 @@ return (
               messages.map((m, i) => {
                 const isImage = /\.(jpeg|jpg|gif|png|webp|svg)$/i.test(m.message);
                 const isAudio = /\.(webm|mp3|wav|ogg)$/i.test(m.message);
+                const isDocument = /\.(doc|pdf|docx|txt|ppt|xls)$/i.test(m.message);
                 return (
                   <div key={i} className="mb-2 p-2 rounded" style={{ backgroundColor: "#393e46", color: "#f8f8f8" }}>
                     <strong style={{ color: "#00adb5" }}>{m.user_name === userName ? "You" : m.user_name}:</strong>{" "}
