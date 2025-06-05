@@ -12,6 +12,9 @@ const App = () => {
   const [userName, setUserName] = useState("");
   const [recording, setRecording] = useState(false);
 
+  const CLOUDINARY_UPLOAD_PRESET = 'image Uploader';
+  const CLOUDINARY_CLOUD_NAME = 'dxhopl1cj'; 
+  
   const submit = () => {
     const message = document.getElementById("message").value;
     const room = document.getElementById("room").value;
@@ -45,9 +48,48 @@ const App = () => {
     document.getElementById("join_room").value = "";
   }
 
-  const startRecording = () => {
+const startRecording = async () => {
+    try {
+      const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+      mediaRecorderRef.current = new MediaRecorder(stream);
+      audioChunksRef.current = [];
 
-  }
+      mediaRecorderRef.current.ondataavailable = (e) => {
+        if (e.data.size > 0) {
+          audioChunksRef.current.push(e.data);
+        }
+      };
+
+      mediaRecorderRef.current.onstop = async () => {
+        const audioBlob = new Blob(audioChunksRef.current, { type: 'audio/webm' });
+        
+        const formData = new FormData();
+        formData.append('file', audioBlob);
+        formData.append('upload_preset', CLOUDINARY_UPLOAD_PRESET);
+
+        try {
+          const response = await fetch(
+            `https://api.cloudinary.com/v1_1/${CLOUDINARY_CLOUD_NAME}/video/upload`,
+            {
+              method: 'POST',
+              body: formData,
+            }
+          );
+          const data = await response.json();
+          setCloudinaryURL(data.secure_url);
+          console.log('Uploaded to Cloudinary:', data.secure_url);
+        } catch (error) {
+          console.error('Error uploading to Cloudinary:', error);
+        }
+      };
+
+      mediaRecorderRef.current.start();
+      setRecording(true);
+    } catch (err) {
+      console.error('Microphone access error:', err);
+    }
+  };
+
 
   const stopRecording = () => {
 
