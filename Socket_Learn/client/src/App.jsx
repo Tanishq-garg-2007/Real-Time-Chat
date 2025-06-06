@@ -2,7 +2,7 @@ import React, { useEffect, useState, useRef } from 'react';
 import { io } from 'socket.io-client'
 import { Container } from '@mui/material'
 
-const socket = io("https://real-time-chat-backend-hvvt.onrender.com");
+const socket = io("http://localhost:3000");
 
 const App = () => {
 
@@ -25,14 +25,68 @@ const App = () => {
   }
 
   const image_upload = async (e) => {
+    console.log("i.1")
     const file = e.target.files[0];
     if (!file) return alert("Please choose an image first");
+    console.log("i.2")
     const formData = new FormData();
     formData.append("file", file);
     formData.append("upload_preset", "image Uploader");
     formData.append("cloud_name", "dxhopl1cj");
+    console.log("i.3")
     try {
       const res = await fetch("https://api.cloudinary.com/v1_1/dxhopl1cj/image/upload", { method: "POST", body: formData });
+      if (!res.ok) throw new Error("Upload failed");
+      const data = await res.json();
+      document.getElementById("message").value = data.secure_url;
+    } catch (err) {
+      console.error("Upload failed:", err);
+      alert("Failed to upload image");
+    }
+  };
+
+  const video_upload = async (e) => {
+    console.log("v.1")
+    const file = e.target.files[0];
+    if (!file) return alert("Please choose a video first"); 
+    console.log("v.2")
+
+    const formData = new FormData();
+    formData.append("file", file);
+    formData.append("upload_preset", "image Uploader"); 
+    console.log("v.3")
+    try {
+      console.log("v.4")
+      const res = await fetch("https://api.cloudinary.com/v1_1/dxhopl1cj/video/upload", {
+        method: "POST",
+        body: formData
+      });
+      console.log("v.5")
+      if (!res.ok) throw new Error("Upload failed");
+      console.log("v.6")
+      const data = await res.json();
+      console.log("v.7")
+      document.getElementById("message").value = data.secure_url;
+      console.log("v.8")
+    } catch (err) {
+      console.error("Upload failed:", err);
+      alert("Failed to upload video"); // not 'image'
+    }
+  };
+
+
+  const document_upload = async (e) => {
+    console.log("d.1")
+    const file = e.target.files[0];
+    if (!file) return alert("Please choose an image first");
+    console.log("d.2")
+    const formData = new FormData();
+    formData.append("file", file);
+    formData.append("upload_preset", "image Uploader");
+    formData.append("cloud_name", "dxhopl1cj");
+    console.log("d.3")
+    try {
+      const res = await fetch("https://api.cloudinary.com/v1_1/dxhopl1cj/auto/upload", { method: "POST", body: formData });
       if (!res.ok) throw new Error("Upload failed");
       const data = await res.json();
       document.getElementById("message").value = data.secure_url;
@@ -147,6 +201,9 @@ return (
               messages.map((m, i) => {
                 const isImage = /\.(jpeg|jpg|gif|png|webp|svg)$/i.test(m.message);
                 const isAudio = /\.(webm|mp3|wav|ogg)$/i.test(m.message);
+                const isDocument = /\.(doc|pdf|docx|txt|ppt|xls)$/i.test(m.message);
+                const isvideo = /\.(mp4|mov|avi|webm|flv)$/i.test(m.message);
+
                 return (
                   <div key={i} className="mb-2 p-2 rounded" style={{ backgroundColor: "#393e46", color: "#f8f8f8" }}>
                     <strong style={{ color: "#00adb5" }}>{m.user_name === userName ? "You" : m.user_name}:</strong>{" "}
@@ -154,8 +211,16 @@ return (
                       <img src={m.message} alt="sent content" style={{ maxWidth: "200px", borderRadius: "8px", display: "block", marginTop: "5px" }} />
                     ) : isAudio ? (
                       <audio controls src={m.message} style={{ display: "block", marginTop: "5px" }} />
-                    ) : (
-                      m.message
+                    ) : isDocument? (
+                      <iframe src={m.message} width="100%" height="600px" style={{ border: 'none' }} title="PDF Preview" />
+
+                    ): isvideo? (
+<video width="70%" height="auto" controls>
+  <source src={m.message} type="video/mp4" />
+  Your browser does not support the video tag.
+</video>
+                    ):(
+                        m.message
                     )}
                   </div>
                 );
@@ -167,13 +232,32 @@ return (
             <label className="form-label">Message</label>
             <div style={{ display: 'flex', flexWrap: 'wrap', gap: '10px' }}>
               <input type="text" className="form-control" id="message" placeholder="Type a message..." style={{ flex: 1, minWidth: '200px', backgroundColor: "#333", color: "#fff", border: "1px solid #444" }} />
-              <label htmlFor="image-upload" style={{ backgroundColor: "#00adb5", color: "#fff", padding: "8px 12px", borderRadius: "6px", cursor: "pointer", fontSize: "14px", whiteSpace: "nowrap" }}>📎 Upload</label>
-              <input type="file" id="image-upload" accept="image/*" onChange={image_upload} style={{ display: 'none' }} />
-              {!recording ? (
-                <button onClick={startRecording} style={{ backgroundColor: "#00adb5", color: "#fff", padding: "8px 12px", borderRadius: "6px", border: "none", cursor: "pointer" }}>🎙️</button>
-              ) : (
-                <button onClick={stopRecording} style={{ backgroundColor: "#ff4d4d", color: "#fff", padding: "8px 12px", borderRadius: "6px", border: "none", cursor: "pointer" }}>🛑</button>
-              )}
+
+                <div className="dropdown">
+                    <button className="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        📎 Upload
+                    </button>
+
+                    <div className="dropdown-menu m-2 p-2" style={{backgroundColor: "black"}} aria-labelledby="dropdownMenuButton">
+
+                        <label className="dropdown-item mt-2 p-1" htmlFor="image-upload" style={{ backgroundColor: "#00adb5", color: "#fff", padding: "8px 12px", borderRadius: "6px", cursor: "pointer", fontSize: "14px", whiteSpace: "nowrap" }}>📷 Images </label>
+                        <input className="dropdown-item mt-2 p-1" type="file" id="image-upload" onChange={image_upload} style={{ display: 'none' }} />
+
+                        <label className="dropdown-item mt-2 p-1" htmlFor="video-upload" style={{ backgroundColor: "#00adb5", color: "#fff", padding: "8px 12px", borderRadius: "6px", cursor: "pointer", fontSize: "14px", whiteSpace: "nowrap" }}>🎥 Video </label>
+                        <input className="dropdown-item mt-2 p-1" type="file" id="video-upload" onChange={video_upload} style={{ display: 'none' }} />
+
+                        <label className="dropdown-item mt-2 p-1" htmlFor="document-upload" style={{ backgroundColor: "#00adb5", color: "#fff", padding: "8px 12px", borderRadius: "6px", cursor: "pointer", fontSize: "14px", whiteSpace: "nowrap" }}>📄 Document</label>
+                        <input className="dropdown-item mt-2 p-1" type="file" id="document-upload" onChange={document_upload} style={{ display: 'none' }} />
+
+
+                    </div>
+                </div>
+
+                        {!recording ? (
+                            <button  onClick={startRecording} style={{ backgroundColor: "#00adb5", color: "#fff", padding: "8px 12px", borderRadius: "6px", border: "none", cursor: "pointer" }}>🎙️</button>
+                        ) : (
+                            <button onClick={stopRecording} style={{ backgroundColor: "#ff4d4d", color: "#fff", padding: "8px 12px", borderRadius: "6px", border: "none", cursor: "pointer" }}>🛑</button>
+                        )}
             </div>
           </div>
 
