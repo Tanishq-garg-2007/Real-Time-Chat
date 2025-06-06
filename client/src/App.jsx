@@ -42,23 +42,30 @@ const App = () => {
     }
   };
 
-  const video_upload = async (e) => {
-    const file = e.target.files[0];
-    if (!file) return alert("Please choose an image first");
-    const formData = new FormData();
-    formData.append("file", file);
-    formData.append("upload_preset", "image Uploader");
-    formData.append("cloud_name", "dxhopl1cj");
-    try {
-      const res = await fetch("https://api.cloudinary.com/v1_1/dxhopl1cj/video/upload", { method: "POST", body: formData });
-      if (!res.ok) throw new Error("Upload failed");
-      const data = await res.json();
-      document.getElementById("message").value = data.secure_url;
-    } catch (err) {
-      console.error("Upload failed:", err);
-      alert("Failed to upload image");
-    }
-  };
+const video_upload = async (e) => {
+  const file = e.target.files[0];
+  if (!file) return alert("Please choose a video first"); // not 'image'
+
+  const formData = new FormData();
+  formData.append("file", file);
+  formData.append("upload_preset", "image Uploader"); // this should match your Cloudinary preset name (double check spacing!)
+  // No need to append cloud_name to formData
+
+  try {
+    const res = await fetch("https://api.cloudinary.com/v1_1/dxhopl1cj/video/upload", {
+      method: "POST",
+      body: formData
+    });
+    if (!res.ok) throw new Error("Upload failed");
+
+    const data = await res.json();
+    document.getElementById("message").value = data.secure_url;
+  } catch (err) {
+    console.error("Upload failed:", err);
+    alert("Failed to upload video"); // not 'image'
+  }
+};
+
 
   const document_upload = async (e) => {
     const file = e.target.files[0];
