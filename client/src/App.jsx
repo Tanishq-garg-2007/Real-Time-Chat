@@ -43,13 +43,15 @@ const App = () => {
   };
 
   const video_upload = async (e) => {
+    console.log("1")
     const file = e.target.files[0];
     if (!file) return alert("Please choose a video first"); 
+    console.log("1")
 
     const formData = new FormData();
     formData.append("file", file);
     formData.append("upload_preset", "image Uploader"); 
-
+    console.log("3")
     try {
       const res = await fetch("https://api.cloudinary.com/v1_1/dxhopl1cj/video/upload", {
         method: "POST",
