@@ -42,28 +42,28 @@ const App = () => {
     }
   };
 
-const video_upload = async (e) => {
-  const file = e.target.files[0];
-  if (!file) return alert("Please choose a video first"); 
+  const video_upload = async (e) => {
+    const file = e.target.files[0];
+    if (!file) return alert("Please choose a video first"); 
 
-  const formData = new FormData();
-  formData.append("file", file);
-  formData.append("upload_preset", "image Uploader"); 
+    const formData = new FormData();
+    formData.append("file", file);
+    formData.append("upload_preset", "image Uploader"); 
 
-  try {
-    const res = await fetch("https://api.cloudinary.com/v1_1/dxhopl1cj/video/upload", {
-      method: "POST",
-      body: formData
-    });
-    if (!res.ok) throw new Error("Upload failed");
+    try {
+      const res = await fetch("https://api.cloudinary.com/v1_1/dxhopl1cj/video/upload", {
+        method: "POST",
+        body: formData
+      });
+      if (!res.ok) throw new Error("Upload failed");
 
-    const data = await res.json();
-    document.getElementById("message").value = data.secure_url;
-  } catch (err) {
-    console.error("Upload failed:", err);
-    alert("Failed to upload video"); // not 'image'
-  }
-};
+      const data = await res.json();
+      document.getElementById("message").value = data.secure_url;
+    } catch (err) {
+      console.error("Upload failed:", err);
+      alert("Failed to upload video"); // not 'image'
+    }
+  };
 
 
   const document_upload = async (e) => {
