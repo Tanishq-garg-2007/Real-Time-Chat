@@ -222,13 +222,13 @@ return (
 
                     <div className="dropdown-menu m-1 p-2" style={{backgroundColor: "black"}} aria-labelledby="dropdownMenuButton">
 
-                        <label className="dropdown-item mt-2 p-1" htmlFor="image-upload" style={{ backgroundColor: "#00adb5", color: "#fff", padding: "8px 12px", borderRadius: "6px", cursor: "pointer", fontSize: "14px", whiteSpace: "nowrap" }}> Images </label>
+                        <label className="dropdown-item mt-2 p-1" htmlFor="image-upload" style={{ backgroundColor: "#00adb5", color: "#fff", padding: "8px 12px", borderRadius: "6px", cursor: "pointer", fontSize: "14px", whiteSpace: "nowrap" }}>📷 Images </label>
                         <input className="dropdown-item mt-2 p-1" type="file" id="image-upload" onChange={image_upload} style={{ display: 'none' }} />
 
-                        <label className="dropdown-item mt-2 p-1" htmlFor="video-upload" style={{ backgroundColor: "#00adb5", color: "#fff", padding: "8px 12px", borderRadius: "6px", cursor: "pointer", fontSize: "14px", whiteSpace: "nowrap" }}> Video </label>
+                        <label className="dropdown-item mt-2 p-1" htmlFor="video-upload" style={{ backgroundColor: "#00adb5", color: "#fff", padding: "8px 12px", borderRadius: "6px", cursor: "pointer", fontSize: "14px", whiteSpace: "nowrap" }}>🎥 Video </label>
                         <input className="dropdown-item mt-2 p-1" type="file" id="video-upload" onChange={video_upload} style={{ display: 'none' }} />
 
-                        <label className="dropdown-item mt-2 p-1" htmlFor="document-upload" style={{ backgroundColor: "#00adb5", color: "#fff", padding: "8px 12px", borderRadius: "6px", cursor: "pointer", fontSize: "14px", whiteSpace: "nowrap" }}> Document</label>
+                        <label className="dropdown-item mt-2 p-1" htmlFor="document-upload" style={{ backgroundColor: "#00adb5", color: "#fff", padding: "8px 12px", borderRadius: "6px", cursor: "pointer", fontSize: "14px", whiteSpace: "nowrap" }}>📄 Document</label>
                         <input className="dropdown-item mt-2 p-1" type="file" id="document-upload" onChange={document_upload} style={{ display: 'none' }} />
 
                         {!recording ? (
