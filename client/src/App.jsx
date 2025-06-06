@@ -72,12 +72,15 @@ const App = () => {
 
 
   const document_upload = async (e) => {
+    console.log("d.1")
     const file = e.target.files[0];
     if (!file) return alert("Please choose an image first");
+    console.log("d.2")
     const formData = new FormData();
     formData.append("file", file);
     formData.append("upload_preset", "image Uploader");
     formData.append("cloud_name", "dxhopl1cj");
+    console.log("d.3")
     try {
       const res = await fetch("https://api.cloudinary.com/v1_1/dxhopl1cj/raw/upload", { method: "POST", body: formData });
       if (!res.ok) throw new Error("Upload failed");
