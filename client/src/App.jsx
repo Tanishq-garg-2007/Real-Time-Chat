@@ -215,7 +215,7 @@ return (
                       <embed src={m.message} type="application/pdf" width="100%" height="600px" />
 
                     ): isvideo? (
-<video width="100%" height="auto" controls>
+<video width="70%" height="auto" controls>
   <source src={m.message} type="video/mp4" />
   Your browser does not support the video tag.
 </video>
