@@ -220,7 +220,7 @@ return (
                         📎 Upload
                     </button>
 
-                    <div className="dropdown-menu m-1 p-2" style={{backgroundColor: "black"}} aria-labelledby="dropdownMenuButton">
+                    <div className="dropdown-menu m-2 p-2" style={{backgroundColor: "black"}} aria-labelledby="dropdownMenuButton">
 
                         <label className="dropdown-item mt-2 p-1" htmlFor="image-upload" style={{ backgroundColor: "#00adb5", color: "#fff", padding: "8px 12px", borderRadius: "6px", cursor: "pointer", fontSize: "14px", whiteSpace: "nowrap" }}>📷 Images </label>
                         <input className="dropdown-item mt-2 p-1" type="file" id="image-upload" onChange={image_upload} style={{ display: 'none' }} />
