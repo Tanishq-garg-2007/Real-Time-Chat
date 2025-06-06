@@ -249,15 +249,15 @@ return (
                         <label className="dropdown-item mt-2 p-1" htmlFor="document-upload" style={{ backgroundColor: "#00adb5", color: "#fff", padding: "8px 12px", borderRadius: "6px", cursor: "pointer", fontSize: "14px", whiteSpace: "nowrap" }}>📄 Document</label>
                         <input className="dropdown-item mt-2 p-1" type="file" id="document-upload" onChange={document_upload} style={{ display: 'none' }} />
 
-                        {!recording ? (
-                            <button className="dropdown-item mt-2 p-1" onClick={startRecording} style={{ backgroundColor: "#00adb5", color: "#fff", padding: "8px 12px", borderRadius: "6px", border: "none", cursor: "pointer" }}>🎙️ Audio</button>
-                        ) : (
-                            <button className="dropdown-item mt-2 p-1" onClick={stopRecording} style={{ backgroundColor: "#ff4d4d", color: "#fff", padding: "8px 12px", borderRadius: "6px", border: "none", cursor: "pointer" }}>🛑 Audio</button>
-                        )}
 
                     </div>
                 </div>
 
+                        {!recording ? (
+                            <button  onClick={startRecording} style={{ backgroundColor: "#00adb5", color: "#fff", padding: "8px 12px", borderRadius: "6px", border: "none", cursor: "pointer" }}>🎙️</button>
+                        ) : (
+                            <button onClick={stopRecording} style={{ backgroundColor: "#ff4d4d", color: "#fff", padding: "8px 12px", borderRadius: "6px", border: "none", cursor: "pointer" }}>🛑</button>
+                        )}
             </div>
           </div>
 
