@@ -46,24 +46,28 @@ const App = () => {
   };
 
   const video_upload = async (e) => {
-    console.log("1")
+    console.log("v.1")
     const file = e.target.files[0];
     if (!file) return alert("Please choose a video first"); 
-    console.log("1")
+    console.log("v.2")
 
     const formData = new FormData();
     formData.append("file", file);
     formData.append("upload_preset", "image Uploader"); 
-    console.log("3")
+    console.log("v.3")
     try {
+      console.log("v.4")
       const res = await fetch("https://api.cloudinary.com/v1_1/dxhopl1cj/video/upload", {
         method: "POST",
         body: formData
       });
+      console.log("v.5")
       if (!res.ok) throw new Error("Upload failed");
-
+      console.log("v.6")
       const data = await res.json();
+      console.log("v.7")
       document.getElementById("message").value = data.secure_url;
+      console.log("v.8")
     } catch (err) {
       console.error("Upload failed:", err);
       alert("Failed to upload video"); // not 'image'
