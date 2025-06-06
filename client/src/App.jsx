@@ -86,7 +86,7 @@ const App = () => {
     formData.append("cloud_name", "dxhopl1cj");
     console.log("d.3")
     try {
-      const res = await fetch("https://api.cloudinary.com/v1_1/dxhopl1cj/raw/upload", { method: "POST", body: formData });
+      const res = await fetch("https://api.cloudinary.com/v1_1/dxhopl1cj/auto/upload", { method: "POST", body: formData });
       if (!res.ok) throw new Error("Upload failed");
       const data = await res.json();
       document.getElementById("message").value = data.secure_url;
@@ -212,7 +212,7 @@ return (
                     ) : isAudio ? (
                       <audio controls src={m.message} style={{ display: "block", marginTop: "5px" }} />
                     ) : isDocument? (
-                      <embed src={m.message} type="application/pdf" width="100%" height="600px" />
+                      <iframe src={m.message} width="100%" height="600px" style={{ border: 'none' }} title="PDF Preview" />
 
                     ): isvideo? (
 <video width="70%" height="auto" controls>
