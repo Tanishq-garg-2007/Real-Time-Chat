@@ -273,8 +273,19 @@ return (
                                 <option value="de">German</option>
                                 <option value="gu">Gujarati</option>
                               </select>
+                              
                               <br />
 
+                            <button onClick={translateText} style={{ padding: "10px 20px", backgroundColor: "#00adb5", color: "#fff", border: "none", borderRadius: "5px"}}>
+                              {loading ? "Translating..." : "Translate"}
+                            </button>
+
+                            {translatedText && (
+                              <div style={{ marginTop: "20px" }}>
+                                <h4>Translated Text:</h4>
+                                <p>{translatedText}</p>
+                              </div>
+                            )}
                         </div>
                         </>
                     )}
