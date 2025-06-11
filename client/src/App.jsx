@@ -145,6 +145,9 @@ const startRecording = async () => {
     }
   };
 
+  const speak = () => {
+
+  }
 
   const stopRecording = () => {
     if (mediaRecorderRef.current) {
@@ -220,7 +223,10 @@ return (
   Your browser does not support the video tag.
 </video>
                     ):(
-                        m.message
+                        <>
+                        {m.message}
+                        <button onClick={speak}>Speak</button>
+                        </>
                     )}
                   </div>
                 );
