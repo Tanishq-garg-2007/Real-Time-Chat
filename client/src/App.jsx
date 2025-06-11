@@ -13,9 +13,7 @@ const App = () => {
   const [recording, setRecording] = useState(false);
   const mediaRecorderRef = useRef(null);
   const audioChunksRef = useRef([]);
-  const [translatedText, setTranslatedText] = useState("");
-  const [targetLang, setTargetLang] = useState("hi");
-  const [loading, setLoading] = useState(false);
+
 
   const CLOUDINARY_UPLOAD_PRESET = 'image Uploader';
   const CLOUDINARY_CLOUD_NAME = 'dxhopl1cj'; 
@@ -156,37 +154,6 @@ const startRecording = async () => {
     speechSynthesis.speak(utterance);
   }
 
-  const translateText = async () => {
-    if (!text.trim()) return;
-    setLoading(true);
-
-    const url = 'https://text-translator2.p.rapidapi.com/translate';
-
-    const options = {
-      method: 'POST',
-      headers: {
-        'content-type': 'application/x-www-form-urlencoded',
-        'X-RapidAPI-Key': 'd9879b04b6msh87afff125ef463cp11f59ejsn3db1d312d594', // 👈 Your API key
-        'X-RapidAPI-Host': 'text-translator2.p.rapidapi.com'
-      },
-      body: new URLSearchParams({
-        source_language: 'en',
-        target_language: targetLang,
-        text: text
-      })
-    };
-
-    try {
-      const response = await fetch(url, options);
-      const result = await response.json();
-      setTranslatedText(result.data.translatedText);
-    } catch (error) {
-      console.error("Translation failed:", error);
-      setTranslatedText("Translation failed.");
-    }
-
-    setLoading(false);
-  };
   
   const stopRecording = () => {
     if (mediaRecorderRef.current) {
@@ -266,26 +233,6 @@ return (
                         {m.message}
                         <div style={{ textAlign: "right"}}>
                           <button className="" style={{ backgroundColor: "#00adb5", border: "1px solid black", borderRadius: "30px", color: "#fff", fontSize: "16px", padding: "6px 12px", cursor: "pointer" }} onClick={() => { const utterance = new SpeechSynthesisUtterance(m.message); utterance.lang = 'hi-IN'; utterance.volume = 1; speechSynthesis.speak(utterance); }} title="Speak this message">🎤</button>
-                              <select value={targetLang} onChange={(e) => setTargetLang(e.target.value)} style={{ margin: "10px 0", padding: "8px" }}>
-                                <option value="hi">Hindi</option>
-                                <option value="es">Spanish</option>
-                                <option value="fr">French</option>
-                                <option value="de">German</option>
-                                <option value="gu">Gujarati</option>
-                              </select>
-                              
-                              <br />
-
-                            <button onClick={translateText} style={{ padding: "10px 20px", backgroundColor: "#00adb5", color: "#fff", border: "none", borderRadius: "5px"}}>
-                              {loading ? "Translating..." : "Translate"}
-                            </button>
-
-                            {translatedText && (
-                              <div style={{ marginTop: "20px" }}>
-                                <h4>Translated Text:</h4>
-                                <p>{translatedText}</p>
-                              </div>
-                            )}
                         </div>
                         </>
                     )}
