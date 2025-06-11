@@ -146,7 +146,11 @@ const startRecording = async () => {
   };
 
   const speak = () => {
-
+    const utterance = new SpeechSynthesisUtterance(m.message);
+    utterance.lang = 'en-IN'; // Change to 'hi-IN' for Hindi, etc.
+    utterance.volume = 1;
+    utterance.pitch = 1
+    speechSynthesis.speak(utterance);
   }
 
   const stopRecording = () => {
@@ -225,7 +229,7 @@ return (
                     ):(
                         <>
                         {m.message}
-                        <button onClick={speak}>Speak</button>
+                        <button onClick={() => { const utterance = new SpeechSynthesisUtterance(m.message); utterance.lang = 'hi-IN';  speechSynthesis.speak(utterance); }}>Speak</button>
                         </>
                     )}
                   </div>
