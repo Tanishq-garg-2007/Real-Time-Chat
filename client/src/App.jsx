@@ -229,7 +229,7 @@ return (
                     ):(
                         <>
                         {m.message}
-                        <button className='m-2 p-1' onClick={() => { const utterance = new SpeechSynthesisUtterance(m.message); utterance.lang = 'hi-IN';  speechSynthesis.speak(utterance); }} >Speak</button>
+                        <button className='m-2 p-1' style={{backgroundColor: "#00adb5", border: "2px solid black"}} onClick={() => { const utterance = new SpeechSynthesisUtterance(m.message); utterance.lang = 'hi-IN';  speechSynthesis.speak(utterance); }} >Speak</button>
                         </>
                     )}
                   </div>
