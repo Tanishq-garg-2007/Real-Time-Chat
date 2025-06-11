@@ -229,8 +229,8 @@ return (
                     ):(
                         <>
                         {m.message}
-                        <div style={{ textAlign: "right", marginTop: "8px" }}>
-                          <button className="m-0" style={{ backgroundColor: "#00adb5", border: "1px solid black", borderRadius: "30px", color: "#fff", fontSize: "16px", padding: "6px 12px", cursor: "pointer" }} onClick={() => { const utterance = new SpeechSynthesisUtterance(m.message); utterance.lang = 'hi-IN'; utterance.volume = 1; speechSynthesis.speak(utterance); }} title="Speak this message">🎤</button>
+                        <div style={{ textAlign: "right"}}>
+                          <button className="" style={{ backgroundColor: "#00adb5", border: "1px solid black", borderRadius: "30px", color: "#fff", fontSize: "16px", padding: "6px 12px", cursor: "pointer" }} onClick={() => { const utterance = new SpeechSynthesisUtterance(m.message); utterance.lang = 'hi-IN'; utterance.volume = 1; speechSynthesis.speak(utterance); }} title="Speak this message">🎤</button>
                         </div>
                         </>
                     )}
