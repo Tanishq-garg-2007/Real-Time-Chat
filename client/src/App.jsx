@@ -13,9 +13,9 @@ const App = () => {
   const [recording, setRecording] = useState(false);
   const mediaRecorderRef = useRef(null);
   const audioChunksRef = useRef([]);
-const [targetLang, setTargetLang] = useState("hi");
-const [translationMap, setTranslationMap] = useState({});
-const [loading, setLoading] = useState(false);
+  const [translatedText, setTranslatedText] = useState("");
+  const [targetLang, setTargetLang] = useState("hi");
+  const [loading, setLoading] = useState(false);
 
   const CLOUDINARY_UPLOAD_PRESET = 'image Uploader';
   const CLOUDINARY_CLOUD_NAME = 'dxhopl1cj'; 
@@ -156,46 +156,37 @@ const startRecording = async () => {
     speechSynthesis.speak(utterance);
   }
 
-const translateText = async (text, index) => {
-  if (!text.trim()) return;
+  const translateText = async () => {
+    if (!text.trim()) return;
+    setLoading(true);
 
-  setTranslationMap(prev => ({
-    ...prev,
-    [index]: { loading: true, translated: "" }
-  }));
+    const url = 'https://text-translator2.p.rapidapi.com/translate';
 
-  const url = 'https://text-translator2.p.rapidapi.com/translate';
+    const options = {
+      method: 'POST',
+      headers: {
+        'content-type': 'application/x-www-form-urlencoded',
+        'X-RapidAPI-Key': 'd9879b04b6msh87afff125ef463cp11f59ejsn3db1d312d594', // 👈 Your API key
+        'X-RapidAPI-Host': 'text-translator2.p.rapidapi.com'
+      },
+      body: new URLSearchParams({
+        source_language: 'en',
+        target_language: targetLang,
+        text: text
+      })
+    };
 
-  const options = {
-    method: 'POST',
-    headers: {
-      'content-type': 'application/x-www-form-urlencoded',
-      'X-RapidAPI-Key': 'd9879b04b6msh87afff125ef463cp11f59ejsn3db1d312d594', // Replace with environment variable in production
-      'X-RapidAPI-Host': 'text-translator2.p.rapidapi.com'
-    },
-    body: new URLSearchParams({
-      source_language: 'en',
-      target_language: targetLang,
-      text
-    })
+    try {
+      const response = await fetch(url, options);
+      const result = await response.json();
+      setTranslatedText(result.data.translatedText);
+    } catch (error) {
+      console.error("Translation failed:", error);
+      setTranslatedText("Translation failed.");
+    }
+
+    setLoading(false);
   };
-
-  try {
-    const response = await fetch(url, options);
-    const result = await response.json();
-    setTranslationMap(prev => ({
-      ...prev,
-      [index]: { loading: false, translated: result.data.translatedText }
-    }));
-  } catch (error) {
-    console.error("Translation failed:", error);
-    setTranslationMap(prev => ({
-      ...prev,
-      [index]: { loading: false, translated: "Translation failed." }
-    }));
-  }
-};
-
   
   const stopRecording = () => {
     if (mediaRecorderRef.current) {
@@ -272,47 +263,31 @@ return (
 </video>
                     ):(
                         <>
-  {m.message}
-  <div style={{ textAlign: "right" }}>
-    <button
-      style={{ backgroundColor: "#00adb5", border: "1px solid black", borderRadius: "30px", color: "#fff", fontSize: "16px", padding: "6px 12px", cursor: "pointer" }}
-      onClick={() => {
-        const utterance = new SpeechSynthesisUtterance(m.message);
-        utterance.lang = 'hi-IN';
-        utterance.volume = 1;
-        speechSynthesis.speak(utterance);
-      }}
-      title="Speak this message"
-    >
-      🎤
-    </button>
+                        {m.message}
+                        <div style={{ textAlign: "right"}}>
+                          <button className="" style={{ backgroundColor: "#00adb5", border: "1px solid black", borderRadius: "30px", color: "#fff", fontSize: "16px", padding: "6px 12px", cursor: "pointer" }} onClick={() => { const utterance = new SpeechSynthesisUtterance(m.message); utterance.lang = 'hi-IN'; utterance.volume = 1; speechSynthesis.speak(utterance); }} title="Speak this message">🎤</button>
+                              <select value={targetLang} onChange={(e) => setTargetLang(e.target.value)} style={{ margin: "10px 0", padding: "8px" }}>
+                                <option value="hi">Hindi</option>
+                                <option value="es">Spanish</option>
+                                <option value="fr">French</option>
+                                <option value="de">German</option>
+                                <option value="gu">Gujarati</option>
+                              </select>
+                              
+                              <br />
 
-    <select value={targetLang} onChange={(e) => setTargetLang(e.target.value)} style={{ margin: "10px 0", padding: "8px" }}>
-      <option value="hi">Hindi</option>
-      <option value="es">Spanish</option>
-      <option value="fr">French</option>
-      <option value="de">German</option>
-      <option value="gu">Gujarati</option>
-    </select>
+                            <button onClick={translateText} style={{ padding: "10px 20px", backgroundColor: "#00adb5", color: "#fff", border: "none", borderRadius: "5px"}}>
+                              {loading ? "Translating..." : "Translate"}
+                            </button>
 
-    <br />
-
-    <button
-      onClick={() => translateText(m.message, i)}
-      style={{ padding: "10px 20px", backgroundColor: "#00adb5", color: "#fff", border: "none", borderRadius: "5px" }}
-    >
-      {translationMap[i]?.loading ? "Translating..." : "Translate"}
-    </button>
-
-    {translationMap[i]?.translated && (
-      <div style={{ marginTop: "10px", color: "#fff" }}>
-        <h6 style={{ margin: 0 }}>Translated Text:</h6>
-        <p style={{ margin: 0 }}>{translationMap[i].translated}</p>
-      </div>
-    )}
-  </div>
-</>
-
+                            {translatedText && (
+                              <div style={{ marginTop: "20px" }}>
+                                <h4>Translated Text:</h4>
+                                <p>{translatedText}</p>
+                              </div>
+                            )}
+                        </div>
+                        </>
                     )}
                   </div>
                 );
