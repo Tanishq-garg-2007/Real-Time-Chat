@@ -19,6 +19,29 @@ const io = new Server(server,{
 
 app.use(cors());
 
+app.use((req, res, next) => {
+    const allowedOrigins = [
+      "http://localhost:5173"];
+  
+    const origin = req.headers.origin;
+    if (allowedOrigins.includes(origin)) {
+      res.setHeader("Access-Control-Allow-Origin", origin);
+    }
+  
+    res.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
+    res.setHeader("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+    res.setHeader("Access-Control-Allow-Credentials", "true"); // ✅ Allows cookies/session
+  
+    if (req.method === "OPTIONS") {
+      return res.status(200).end(); // ✅ Handle preflight requests
+    }
+  
+    next();
+  });
+
+  app.use(express.json());  
+  app.use('/api', require("./Routes/CreateRoom"));  
+
 app.get("/",(req,res)=>{
     res.send("Hello World");
 })
