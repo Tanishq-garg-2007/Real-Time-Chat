@@ -447,10 +447,11 @@ const App = () => {
                                 border: "none",
                                 borderRadius: "6px",
                                 fontWeight: "bold",
-                                cursor: "pointer",
+                                cursor: "pointer"
                               }}
+                              title="Translate"
                             >
-                              {loadingMap[i] ? "Translating..." : "<TranslateIcon style={{ fontSize: 24, color: "#00adb5" }} />"}
+                              {loadingMap[i] ? "Translating..." : <TranslateIcon style={{ fontSize: 24, color: "#00adb5" }} />}
                             </button>
 
                             {translatedMap[i] && (
