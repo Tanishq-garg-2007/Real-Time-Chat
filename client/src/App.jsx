@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useRef } from "react";
 import { io } from "socket.io-client";
 import { Container } from "@mui/material";
+import TranslateIcon from '@mui/icons-material/Translate';
 
 const socket = io("http://localhost:3000");
 
@@ -449,7 +450,7 @@ const App = () => {
                                 cursor: "pointer",
                               }}
                             >
-                              {loadingMap[i] ? "Translating..." : "Translate"}
+                              {loadingMap[i] ? "Translating..." : "<TranslateIcon style={{ fontSize: 24, color: "#00adb5" }} />"}
                             </button>
 
                             {translatedMap[i] && (
