@@ -107,6 +107,14 @@ const [loadingMap, setLoadingMap] = useState({});
     document.getElementById("join_room").value = "";
   }
 
+  const messagesEndRef = useRef(null);
+
+useEffect(() => {
+  if (messagesEndRef.current) {
+    messagesEndRef.current.scrollIntoView({ behavior: "smooth" });
+  }
+}, [messages]);
+
 const startRecording = async () => {
     try {
       const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
@@ -357,7 +365,9 @@ return (
                 );
               })
             }
-          </div>
+
+<div ref={messagesEndRef} />
+</div>
 
           <div className="mb-3">
             <label className="form-label">Message</label>
