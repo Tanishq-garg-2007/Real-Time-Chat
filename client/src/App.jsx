@@ -451,7 +451,7 @@ const App = () => {
                               }}
                               title="Translate"
                             >
-                              {loadingMap[i] ? "Translating..." : <TranslateIcon style={{ fontSize: 20, color: "black" }} />}
+                              {loadingMap[i] ? <i className="material-icons">Cached</i> : <TranslateIcon style={{ fontSize: 20, color: "black" }} />}
                             </button>
 
                             {translatedMap[i] && (
