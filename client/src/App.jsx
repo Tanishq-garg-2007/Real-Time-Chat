@@ -343,7 +343,6 @@ return (
           <p>{translatedText}</p>
         </div>
       )}
-      {setTranslatedText("")}
     </div>
   </div>
 </>
