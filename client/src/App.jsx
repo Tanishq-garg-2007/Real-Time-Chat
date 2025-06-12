@@ -155,7 +155,7 @@ const startRecording = async () => {
     }
   };
   
-  const translateText = async () => {
+  const translateText = async (text) => {
     if (typeof text !== "string" || !text.trim()) return;
 
     setLoading(true);
@@ -275,7 +275,7 @@ return (
                           </button>
 
                           <br />
-                          
+
                           {translatedText && (
                             <div style={{ marginTop: "20px" }}>
                               <h4>Translated Text:</h4>
