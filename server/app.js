@@ -2,6 +2,7 @@ import express from 'express'
 import { Server } from 'socket.io'
 import {createServer} from 'http'
 import cors from 'cors'
+import createRoomRoute from './Routes/CreateRoom.js';
 
 const app = express();
 import mongoDb from './db.js';
@@ -40,7 +41,7 @@ app.use((req, res, next) => {
   });
 
   app.use(express.json());  
-  app.use('/api', require("./Routes/CreateRoom"));  
+  app.use('/api', createRoomRoute);
 
 app.get("/",(req,res)=>{
     res.send("Hello World");
