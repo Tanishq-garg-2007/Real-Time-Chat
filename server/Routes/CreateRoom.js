@@ -1,14 +1,17 @@
+// Routes/Messages.js
 import express from 'express';
-const router = express.Router();
 import Chat from '../models/chats.js';
 
-router.post('/api/messages', async (req, res) => {
+const router = express.Router();
+
+router.post('/messages', async (req, res) => {
   try {
-    const newMessage = new Chat(req.body);
+    const { username, room, message } = req.body;
+    const newMessage = new Chat({ username, room, message });
     await newMessage.save();
-    res.status(201).send({ message: 'Message saved!' });
-  } catch (err) {
-    res.status(500).send({ error: err.message });
+    res.status(201).json({ success: true, message: "Message saved" });
+  } catch (error) {
+    res.status(500).json({ success: false, error: error.message });
   }
 });
 
