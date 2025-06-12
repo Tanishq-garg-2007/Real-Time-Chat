@@ -9,4 +9,4 @@ const mongoDb = async() =>{
     }
 }
 
-module.exports = mongoDb
+export default mongoDb;
