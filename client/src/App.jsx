@@ -441,7 +441,7 @@ const App = () => {
                             <button
                               onClick={() => translateText(m.message, i)}
                               style={{
-                                padding: "8px 16px",
+                                padding: "5px 10px",
                                 backgroundColor: "#00adb5",
                                 color: "#fff",
                                 border: "none",
@@ -451,7 +451,7 @@ const App = () => {
                               }}
                               title="Translate"
                             >
-                              {loadingMap[i] ? "Translating..." : <TranslateIcon style={{ fontSize: 24, color: "#00adb5" }} />}
+                              {loadingMap[i] ? "Translating..." : <TranslateIcon style={{ fontSize: 20, color: "black" }} />}
                             </button>
 
                             {translatedMap[i] && (
