@@ -13,9 +13,9 @@ const App = () => {
   const [recording, setRecording] = useState(false);
   const mediaRecorderRef = useRef(null);
   const audioChunksRef = useRef([]);
-  const [translatedText, setTranslatedText] = useState("");
-  const [targetLang, setTargetLang] = useState("hi");
-  const [loading, setLoading] = useState(false);
+const [targetLang, setTargetLang] = useState("hi");
+const [translatedMap, setTranslatedMap] = useState({});
+const [loadingMap, setLoadingMap] = useState({});
 
   const CLOUDINARY_UPLOAD_PRESET = 'image Uploader';
   const CLOUDINARY_CLOUD_NAME = 'dxhopl1cj'; 
