@@ -340,7 +340,6 @@ return (
             border: "1px solid #00adb5"
           }}
         >
-          <h4 style={{ color: "#00adb5" }}>Translated Text:</h4>
           <p>{translatedText}</p>
         </div>
       )}
