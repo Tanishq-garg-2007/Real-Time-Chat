@@ -19,11 +19,21 @@ const App = () => {
   const CLOUDINARY_UPLOAD_PRESET = "image Uploader";
   const CLOUDINARY_CLOUD_NAME = "dxhopl1cj";
 
-  const submit = () => {
+  const submit = async () => {
     const message = document.getElementById("message").value;
     const room = document.getElementById("room").value;
     socket.emit("message", { message, room, user_name: userName });
     document.getElementById("message").value = "";
+
+  try {
+    await fetch('http://localhost:3000/api/messages', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ message, room, user_name: userName }),
+    });
+  } catch (error) {
+    console.error('Error saving message:', error);
+  }
   };
 
   const image_upload = async (e) => {
