@@ -270,7 +270,7 @@ return (
 
                           <br />
 
-                          <button onClick={translateText} style={{ padding: "10px 20px", backgroundColor: "#00adb5", color: "#fff", border: "none", borderRadius: "5px", cursor: "pointer" }}>
+                          <button onClick={()=>translateText(m.message)} style={{ padding: "10px 20px", backgroundColor: "#00adb5", color: "#fff", border: "none", borderRadius: "5px", cursor: "pointer" }}>
                             {loading ? "Translating..." : "Translate"}
                           </button>
 
