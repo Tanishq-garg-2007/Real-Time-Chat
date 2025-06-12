@@ -199,15 +199,6 @@ const App = () => {
         ...prev,
         [idx]: result.data.translatedText,
       }));
-
-      // Clear after 5 seconds
-      // setTimeout(() => {
-      //   setTranslatedMap(prev => {
-      //     const copy = { ...prev };
-      //     delete copy[idx];
-      //     return copy;
-      //   });
-      // }, 5000);
     } catch (err) {
       console.error("Translation failed:", err);
       setTranslatedMap((prev) => ({ ...prev, [idx]: "Translation failed." }));
