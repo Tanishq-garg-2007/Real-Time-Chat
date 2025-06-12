@@ -1,6 +1,6 @@
-const express = require('express');
+import express from 'express';
 const router = express.Router();
-const Chat = require('../models/chats');
+import Chat from '../models/chats.js';
 
 router.post('/api/messages', async (req, res) => {
   try {
@@ -12,4 +12,4 @@ router.post('/api/messages', async (req, res) => {
   }
 });
 
-module.exports = router;
+export default router;
