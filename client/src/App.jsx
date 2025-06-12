@@ -148,14 +148,6 @@ const startRecording = async () => {
     }
   };
 
-  const speak = () => {
-    const utterance = new SpeechSynthesisUtterance(m.message);
-    utterance.lang = 'en-IN'; // Change to 'hi-IN' for Hindi, etc.
-    utterance.volume = 1;
-    utterance.pitch = 1
-    speechSynthesis.speak(utterance);
-  }
-
   const stopRecording = () => {
     if (mediaRecorderRef.current) {
       mediaRecorderRef.current.stop();
@@ -163,6 +155,39 @@ const startRecording = async () => {
     }
   };
   
+  const translateText = async () => {
+    if (typeof text !== "string" || !text.trim()) return;
+
+    setLoading(true);
+
+    const url = 'https://text-translator2.p.rapidapi.com/translate';
+
+    const options = {
+      method: 'POST',
+      headers: {
+        'content-type': 'application/x-www-form-urlencoded',
+        'X-RapidAPI-Key': 'd9879b04b6msh87afff125ef463cp11f59ejsn3db1d312d594', // ⚠️ Replace with env variable in production
+        'X-RapidAPI-Host': 'text-translator2.p.rapidapi.com'
+      },
+      body: new URLSearchParams({
+        source_language: 'en',
+        target_language: targetLang,
+        text: text
+      })
+    };
+
+    try {
+      const response = await fetch(url, options);
+      const result = await response.json();
+      setTranslatedText(result.data.translatedText);
+    } catch (error) {
+      console.error("Translation failed:", error);
+      setTranslatedText("Translation failed.");
+    }
+
+    setLoading(false);
+  };
+
   useEffect(() => {
     socket.on("connect", () => setSocketId(socket.id));
     socket.on("receive-message", (data) => setmessages((messages) => [...messages, data]));
