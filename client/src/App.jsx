@@ -223,16 +223,24 @@ return (
                       <iframe src={m.message} width="100%" height="600px" style={{ border: 'none' }} title="PDF Preview" />
 
                     ): isvideo? (
-<video width="70%" height="auto" controls>
-  <source src={m.message} type="video/mp4" />
-  Your browser does not support the video tag.
-</video>
+                        <video width="70%" height="auto" controls>
+                          <source src={m.message} type="video/mp4" />
+                          Your browser does not support the video tag.
+                        </video>
                     ):(
                         <>
                         {m.message}
                         <div style={{ textAlign: "right"}}>
                           <button className="" style={{ backgroundColor: "#00adb5", border: "1px solid black", borderRadius: "30px", color: "#fff", fontSize: "16px", padding: "6px 12px", cursor: "pointer" }} onClick={() => { const utterance = new SpeechSynthesisUtterance(m.message); utterance.lang = 'hi-IN'; utterance.volume = 1; speechSynthesis.speak(utterance); }} title="Speak this message">🎤</button>
 
+                          <select value={targetLang} onChange={(e) => setTargetLang(e.target.value)} style={{ margin: "10px 0", padding: "8px", backgroundColor: "#2a2a2a", color: "#fff" }}>
+                            <option value="hi">Hindi</option>
+                            <option value="es">Spanish</option>
+                            <option value="fr">French</option>
+                            <option value="de">German</option>
+                            <option value="gu">Gujarati</option>
+                          </select>
+                          
                         </div>
                         </>
                     )}
