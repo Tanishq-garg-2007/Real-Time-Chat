@@ -4,7 +4,7 @@ import {createServer} from 'http'
 import cors from 'cors'
 
 const app = express();
-const mongoDb = require("./db");
+import mongoDb from './db.js';
 
 mongoDb();
 
