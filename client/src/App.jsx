@@ -155,42 +155,47 @@ const startRecording = async () => {
     }
   };
   
-  const translateText = async (text) => {
-    if (typeof text !== "string" || !text.trim()) return;
+const translateText = async (text, idx) => {
+  if (!text.trim()) return;
 
-    setLoading(true);
+  setLoadingMap(prev => ({ ...prev, [idx]: true }));
 
-    const url = 'https://text-translator2.p.rapidapi.com/translate';
-
-    const options = {
-      method: 'POST',
-      headers: {
-        'content-type': 'application/x-www-form-urlencoded',
-        'X-RapidAPI-Key': 'd9879b04b6msh87afff125ef463cp11f59ejsn3db1d312d594', // ⚠️ Replace with env variable in production
-        'X-RapidAPI-Host': 'text-translator2.p.rapidapi.com'
-      },
-      body: new URLSearchParams({
-        source_language: 'en',
-        target_language: targetLang,
-        text: text
-      })
-    };
-
-    try {
-      const response = await fetch(url, options);
-      const result = await response.json();
-      setTranslatedText(result.data.translatedText);
-
-      setTimeout(() => {
-        setTranslatedText("");
-      }, 4000);
-    } catch (error) {
-      console.error("Translation failed:", error);
-      setTranslatedText("Translation failed.");
-    }
-
-    setLoading(false);
+  const url = 'https://text-translator2.p.rapidapi.com/translate';
+  const options = {
+    method: 'POST',
+    headers: {
+      'content-type': 'application/x-www-form-urlencoded',
+      'X-RapidAPI-Key': 'd9879b04b6msh87afff125ef463cp11f59ejsn3db1d312d594',
+      'X-RapidAPI-Host': 'text-translator2.p.rapidapi.com'
+    },
+    body: new URLSearchParams({
+      source_language: 'en',
+      target_language: targetLang,
+      text
+    })
   };
+
+  try {
+    const response = await fetch(url, options);
+    const result = await response.json();
+    setTranslatedMap(prev => ({ ...prev, [idx]: result.data.translatedText }));
+
+    // Clear after 5 seconds
+    setTimeout(() => {
+      setTranslatedMap(prev => {
+        const copy = { ...prev };
+        delete copy[idx];
+        return copy;
+      });
+    }, 5000);
+  } catch (err) {
+    console.error("Translation failed:", err);
+    setTranslatedMap(prev => ({ ...prev, [idx]: "Translation failed." }));
+  } finally {
+    setLoadingMap(prev => ({ ...prev, [idx]: false }));
+  }
+};
+
 
   useEffect(() => {
     socket.on("connect", () => setSocketId(socket.id));
@@ -273,7 +278,6 @@ return (
     <p style={{ fontSize: "16px", marginBottom: "10px" }}>{m.message}</p>
 
     <div style={{ textAlign: "right" }}>
-      {/* Speak Button */}
       <button
         style={{
           backgroundColor: "#00adb5",
@@ -297,7 +301,6 @@ return (
         🎤
       </button>
 
-      {/* Language Selector */}
       <select
         value={targetLang}
         onChange={(e) => setTargetLang(e.target.value)}
@@ -317,9 +320,8 @@ return (
         <option value="gu">Gujarati</option>
       </select>
 
-      {/* Translate Button */}
       <button
-        onClick={() => translateText(m.message)}
+        onClick={() => translateText(m.message, i)}
         style={{
           padding: "8px 16px",
           backgroundColor: "#00adb5",
@@ -330,11 +332,10 @@ return (
           cursor: "pointer"
         }}
       >
-        {loading ? "Translating..." : "Translate"}
+        {loadingMap[i] ? "Translating..." : "Translate"}
       </button>
 
-      {/* Translated Text Display */}
-      {translatedText && (
+      {translatedMap[i] && (
         <div
           style={{
             marginTop: "15px",
@@ -344,7 +345,7 @@ return (
             border: "1px solid #00adb5"
           }}
         >
-          <p>{translatedText}</p>
+          <p>{translatedMap[i]}</p>
         </div>
       )}
     </div>
