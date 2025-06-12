@@ -341,6 +341,7 @@ return (
           }}
         >
           <p>{translatedText}</p>
+          {setTranslatedText("")}
         </div>
       )}
     </div>
