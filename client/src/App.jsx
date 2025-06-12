@@ -255,36 +255,99 @@ return (
                           Your browser does not support the video tag.
                         </video>
                     ):(
-                        <>
-                        {m.message}
-                        <div style={{ textAlign: "right"}}>
-                          <button className="" style={{ backgroundColor: "#00adb5", border: "1px solid black", borderRadius: "30px", color: "#fff", fontSize: "16px", padding: "6px 12px", cursor: "pointer" }} onClick={() => { const utterance = new SpeechSynthesisUtterance(m.message); utterance.lang = 'hi-IN'; utterance.volume = 1; speechSynthesis.speak(utterance); }} title="Speak this message">🎤</button>
+<>
+  <div
+    style={{
+      backgroundColor: "#2a2a2a",
+      padding: "15px",
+      borderRadius: "10px",
+      marginBottom: "20px",
+      color: "#fff",
+      boxShadow: "0 0 10px rgba(0, 173, 181, 0.2)"
+    }}
+  >
+    <p style={{ fontSize: "16px", marginBottom: "10px" }}>{m.message}</p>
 
-                          <select value={targetLang} onChange={(e) => setTargetLang(e.target.value)} style={{ margin: "10px 0", padding: "8px", backgroundColor: "#2a2a2a", color: "#fff" }}>
-                            <option value="hi">Hindi</option>
-                            <option value="es">Spanish</option>
-                            <option value="fr">French</option>
-                            <option value="de">German</option>
-                            <option value="gu">Gujarati</option>
-                          </select>
+    <div style={{ textAlign: "right" }}>
+      {/* Speak Button */}
+      <button
+        style={{
+          backgroundColor: "#00adb5",
+          border: "none",
+          borderRadius: "50%",
+          color: "#fff",
+          fontSize: "18px",
+          width: "40px",
+          height: "40px",
+          marginRight: "10px",
+          cursor: "pointer"
+        }}
+        onClick={() => {
+          const utterance = new SpeechSynthesisUtterance(m.message);
+          utterance.lang = 'hi-IN';
+          utterance.volume = 1;
+          speechSynthesis.speak(utterance);
+        }}
+        title="Speak this message"
+      >
+        🎤
+      </button>
 
-                          <br />
+      {/* Language Selector */}
+      <select
+        value={targetLang}
+        onChange={(e) => setTargetLang(e.target.value)}
+        style={{
+          padding: "8px 12px",
+          borderRadius: "6px",
+          backgroundColor: "#1e1e1e",
+          color: "#fff",
+          border: "1px solid #00adb5",
+          marginRight: "10px"
+        }}
+      >
+        <option value="hi">Hindi</option>
+        <option value="es">Spanish</option>
+        <option value="fr">French</option>
+        <option value="de">German</option>
+        <option value="gu">Gujarati</option>
+      </select>
 
-                          <button onClick={()=>translateText(m.message)} style={{ padding: "10px 20px", backgroundColor: "#00adb5", color: "#fff", border: "none", borderRadius: "5px", cursor: "pointer" }}>
-                            {loading ? "Translating..." : "Translate"}
-                          </button>
+      {/* Translate Button */}
+      <button
+        onClick={() => translateText(m.message)}
+        style={{
+          padding: "8px 16px",
+          backgroundColor: "#00adb5",
+          color: "#fff",
+          border: "none",
+          borderRadius: "6px",
+          fontWeight: "bold",
+          cursor: "pointer"
+        }}
+      >
+        {loading ? "Translating..." : "Translate"}
+      </button>
 
-                          <br />
+      {/* Translated Text Display */}
+      {translatedText && (
+        <div
+          style={{
+            marginTop: "15px",
+            padding: "10px",
+            backgroundColor: "#1e1e1e",
+            borderRadius: "6px",
+            border: "1px solid #00adb5"
+          }}
+        >
+          <h4 style={{ color: "#00adb5" }}>Translated Text:</h4>
+          <p>{translatedText}</p>
+        </div>
+      )}
+    </div>
+  </div>
+</>
 
-                          {translatedText && (
-                            <div style={{ marginTop: "20px" }}>
-                              <h4>Translated Text:</h4>
-                              <p>{translatedText}</p>
-                            </div>
-                          )}  
-
-                        </div>
-                        </>
                     )}
                   </div>
                 );
