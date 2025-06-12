@@ -180,6 +180,10 @@ const startRecording = async () => {
       const response = await fetch(url, options);
       const result = await response.json();
       setTranslatedText(result.data.translatedText);
+
+      setTimeout(() => {
+        setTranslatedText("");
+      }, 4000);
     } catch (error) {
       console.error("Translation failed:", error);
       setTranslatedText("Translation failed.");
