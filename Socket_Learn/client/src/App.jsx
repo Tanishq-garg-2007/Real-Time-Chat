@@ -450,7 +450,7 @@ const App = () => {
                                 cursor: "pointer",
                               }}
                             >
-                              {loadingMap[i] ? "Translating..." : "Translate"}
+                              {loadingMap[i] ? "⏳" : "A⇄あ"}
                             </button>
 
                             {translatedMap[i] && (
