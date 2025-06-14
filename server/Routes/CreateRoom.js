@@ -1,4 +1,3 @@
-// Routes/Messages.js
 import express from 'express';
 import Chat from '../models/chats.js';
 
