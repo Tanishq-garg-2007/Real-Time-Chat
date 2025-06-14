@@ -111,6 +111,8 @@ const App = () => {
     setCurrentRoom(roomname);
     socket.emit("join-room", { room: roomname, user_name: userName });
     setmessages([]);
+
+    
     document.getElementById("join_room").value = "";
   };
 
