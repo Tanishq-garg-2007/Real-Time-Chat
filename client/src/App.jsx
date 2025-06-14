@@ -106,13 +106,21 @@ const App = () => {
     }
   };
 
-  const join_room = () => {
+  const join_room = async () => {
     const roomname = document.getElementById("join_room").value;
     setCurrentRoom(roomname);
     socket.emit("join-room", { room: roomname, user_name: userName });
     setmessages([]);
 
     
+  try {
+    const res = await fetch(`http://localhost:3000/api/messages/${roomname}`);
+    const data = await res.json();
+    setmessages(data); 
+  } catch (error) {
+    console.error("Failed to load messages:", error);
+  }
+
     document.getElementById("join_room").value = "";
   };
 

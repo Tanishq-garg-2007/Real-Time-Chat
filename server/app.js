@@ -4,6 +4,7 @@ import { createServer } from 'http';
 import cors from 'cors';
 import mongoDb from './db.js';
 import ChatMessage from './models/ChatMessage.js';
+import messageRoute from './Routes/messages.js';
 
 const app = express();
 mongoDb();
@@ -29,7 +30,8 @@ app.get("/", (req, res) => {
   res.send("Hello World");
 });
 
-// Socket.IO logic
+app.use('/api', messageRoute);
+
 io.on("connection", (socket) => {
   console.log("User connected:", socket.id);
 
