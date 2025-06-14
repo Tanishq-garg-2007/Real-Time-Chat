@@ -1,48 +1,68 @@
-import express from 'express'
-import { Server } from 'socket.io'
-import {createServer} from 'http'
-import cors from 'cors'
+import express from 'express';
+import { Server } from 'socket.io';
+import { createServer } from 'http';
+import cors from 'cors';
+import mongoDb from './db.js';
+import ChatMessage from './models/ChatMessage.js';
+import messageRoute from './Routes/messages.js';
 
 const app = express();
+mongoDb();
+
 const server = createServer(app);
-const io = new Server(server,{
-    cors:{
-        origin:"https://real-time-chat-frontend-ib7j.onrender.com",
-        methods:["GET","POST"],
-        credentials:"true"
-    },
+const io = new Server(server, {
+  cors: {
+    origin: "http://localhost:5173",
+    methods: ["GET", "POST"],
+    credentials: true,
+  },
 });
 
-app.use(cors());
+// Middleware
+app.use(cors({
+  origin: "https://real-time-chat-frontend-ib7j.onrender.com",
+  methods: ["GET", "POST", "PUT", "DELETE"],
+  credentials: true
+}));
+app.use(express.json());
 
-app.get("/",(req,res)=>{
-    res.send("Hello World");
-})
+app.get("/", (req, res) => {
+  res.send("Hello World");
+});
 
-io.on("connection",(socket)=>{
-    console.log("User connected");
-    console.log("Id",socket.id);
+app.use('/api', messageRoute);
 
-    socket.on("message",({message,room,user_name})=>{
-        console.log(message);
-        io.to(room).emit("receive-message",{message,user_name});
+io.on("connection", (socket) => {
+  console.log("User connected:", socket.id);
+
+  socket.on("join-room", ({ room, user_name }) => {
+    socket.join(room);
+    console.log(`${user_name} joined room ${room}`);
+
+    socket.to(room).emit("user-joined", {
+      message: `${user_name} has joined the room.`,
+      user_name: "System"
     });
+  });
 
-    socket.on("join-room", ({ room, user_name }) => {
-        socket.join(room);
-        console.log(`${user_name} joined room ${room}`);
+  socket.on("message", async ({ message, room, user_name }) => {
+    console.log(`Message from ${user_name} in ${room}: ${message}`);
     
-        socket.to(room).emit("user-joined", {
-            message: `${user_name} has joined the room.`,
-            user_name: "System"
-        });
-    });
+    try {
+      const newMessage = new ChatMessage({ room_name: room, user_name, message });
+      await newMessage.save();
+    } catch (err) {
+      console.error("Error saving message:", err);
+    }
 
-    socket.on("disconnect",()=>{
-        console.log("User Disconnected",socket.id)
-    });
-})
+    io.to(room).emit("receive-message", { message, user_name });
+  });
 
-server.listen(3000,()=>{
-    console.log("Server Is running on port 3000") 
-})
+  socket.on("disconnect", () => {
+    console.log("User disconnected:", socket.id);
+  });
+});
+
+server.listen(3000, () => {
+  console.log("Server is running on port 3000");
+});
