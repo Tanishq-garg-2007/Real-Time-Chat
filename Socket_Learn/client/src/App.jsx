@@ -19,7 +19,7 @@ const App = () => {
   const CLOUDINARY_UPLOAD_PRESET = "image Uploader";
   const CLOUDINARY_CLOUD_NAME = "dxhopl1cj";
 
-  const submit = () => {
+  const submit = async () => {
     const message = document.getElementById("message").value;
     const room = document.getElementById("room").value;
     socket.emit("message", { message, room, user_name: userName });
@@ -106,11 +106,21 @@ const App = () => {
     }
   };
 
-  const join_room = () => {
+  const join_room = async () => {
     const roomname = document.getElementById("join_room").value;
     setCurrentRoom(roomname);
     socket.emit("join-room", { room: roomname, user_name: userName });
     setmessages([]);
+
+    
+  try {
+    const res = await fetch(`https://real-time-chat-backend-hvvt.onrender.com/api/messages/${roomname}`);
+    const data = await res.json();
+    setmessages(data); 
+  } catch (error) {
+    console.error("Failed to load messages:", error);
+  }
+
     document.getElementById("join_room").value = "";
   };
 
@@ -199,15 +209,6 @@ const App = () => {
         ...prev,
         [idx]: result.data.translatedText,
       }));
-
-      // Clear after 5 seconds
-      // setTimeout(() => {
-      //   setTranslatedMap(prev => {
-      //     const copy = { ...prev };
-      //     delete copy[idx];
-      //     return copy;
-      //   });
-      // }, 5000);
     } catch (err) {
       console.error("Translation failed:", err);
       setTranslatedMap((prev) => ({ ...prev, [idx]: "Translation failed." }));
