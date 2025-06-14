@@ -3,7 +3,7 @@ import { Server } from 'socket.io';
 import { createServer } from 'http';
 import cors from 'cors';
 import mongoDb from './db.js';
-import ChatMessage from './models/Chat.js';
+import ChatMessage from './models/ChatMessage.js';
 
 const app = express();
 mongoDb();
